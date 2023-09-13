@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text Capitalizer</title>
+    <!-- TODO: fix this style import to use url_for instead of hard coding -->
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+</head>
+<body>
+    <h1>Text Capitalizer</h1>
+    
+    <form method="POST">
+        <label for="user_input">Enter text:</label>
+        <input type="text" id="user_input" name="user_input">
+        <input type="submit" value="Submit">
+    </form>
+    
+    <div class="chatbox">
+        {% for message in conversation %}
+            <p class="user-message">{{ message.user }}</p>
+            <p class="bot-message">{{ message.bot }}</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
