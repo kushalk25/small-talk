@@ -16,8 +16,11 @@
     
     <div class="chatbox">
         {% for message in conversation %}
-            <p class="user-message">{{ message.user }}</p>
-            <p class="bot-message">{{ message.bot }}</p>
+            {% if message.role == "user" %}
+                <p class="user-message">{{ message.content }}</p>
+            {% elif message.role  == "assistant" %}
+                <p class="bot-message">{{ message.content }}</p>
+            {% endif %}
         {% endfor %}
     </div>
 </body>

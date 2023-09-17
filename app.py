@@ -8,30 +8,29 @@ app = Flask(__name__)
 # openai setup
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Initialize an empty conversation list to store messages
-conversation = []
+# Make global variable to store the conversatino history.
+conversation = [{"role": "system", "content": "You are a helpful assistant"}]
 
 # Define a route for the home page
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        # Get the user's input from the form
+        # Get the user's input from the form and track it
         user_input = request.form['user_input']
+        conversation.append({"role": "user", "content": user_input})
 
+        # get the chatgpt response and add that too
         chat_gpt_response = call_chat_gpt(user_input)
-
-        # Add user's input and capitalized response to the conversation
-        conversation.append({'user': user_input, 'bot': chat_gpt_response})
+        conversation.append({"role": "assistant", "content": chat_gpt_response})
 
     return render_template('index.html', conversation=conversation)
 
 def call_chat_gpt(input):
-    response = openai.Completion.create(
-        model="text-davinci-003",
-        prompt=input,
-        temperature=0.6,
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=conversation
     )
-    return response.choices[0].text
+    return response.choices[0].message.content
 
 
 # Run the application
