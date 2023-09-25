@@ -1,5 +1,6 @@
 import os
 import openai
+import text_to_speech
 from flask import Flask, render_template, request
 
 # Create a Flask application
@@ -22,6 +23,7 @@ def home():
         # get the chatgpt response and add that too
         chat_gpt_response = call_chat_gpt(user_input)
         conversation.append({"role": "assistant", "content": chat_gpt_response})
+        text_to_speech.speak(chat_gpt_response)
 
     return render_template('index.html', conversation=conversation)
 
