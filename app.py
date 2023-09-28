@@ -1,6 +1,7 @@
 import os
 import openai
 import text_to_speech
+import speech_to_text
 from flask import Flask, render_template, request
 
 # Create a Flask application
@@ -16,10 +17,15 @@ conversation = [{"role": "system", "content": "You are a helpful assistant"}]
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        # Get the user's input from the form and track it
-        user_input = request.form['user_input']
-        conversation.append({"role": "user", "content": user_input})
+        input_type = request.form['input_type']
+        user_input = ""
 
+        if input_type == "speech":
+            user_input = speech_to_text.record_audio()
+        elif input_type == "text":
+            user_input = request.form['user_input']
+
+        conversation.append({"role": "user", "content": user_input})
         # get the chatgpt response and add that too
         chat_gpt_response = call_chat_gpt(user_input)
         conversation.append({"role": "assistant", "content": chat_gpt_response})

@@ -1,19 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Text Capitalizer</title>
+    <title>A.I. Assistant</title>
     <!-- TODO: fix this style import to use url_for instead of hard coding -->
     <link rel="stylesheet" type="text/css" href="../static/style.css">
 </head>
 <body>
-    <h1>Text Capitalizer</h1>
-    
-    <form method="POST">
-        <label for="user_input">Enter text:</label>
-        <input type="text" id="user_input" name="user_input">
-        <input type="submit" value="Submit">
-    </form>
-    
+    <h1>A.I. Assistant</h1>
+
+    <p>Chat History:</p>
     <div class="chatbox">
         {% for message in conversation %}
             {% if message.role == "user" %}
@@ -23,5 +18,19 @@
             {% endif %}
         {% endfor %}
     </div>
+
+    <br/>
+    <form method="POST">
+        <label for="user_input">Type a message:</label>
+        <input type="text" id="user_input" name="user_input">
+        <input type="test" hidden id="input_type" name="input_type" value="text">
+        <input type="submit" value="Submit">
+    </form>
+    <br/>
+    <form method="POST">
+        <label for="user_input">Or use your voice:</label>
+        <input type="test" hidden id="input_type" name="input_type" value="speech">
+        <input type="submit" value="Speak">
+    </form>
 </body>
 </html>
