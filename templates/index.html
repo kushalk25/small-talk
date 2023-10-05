@@ -4,35 +4,61 @@
     <title>A.I. Assistant</title>
     <!-- TODO: fix this style import to use url_for instead of hard coding -->
     <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../static/custom.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
 </head>
 <body>
-    <h1>A.I. Assistant</h1>
 
-    <p>Chat History:</p>
-    <div id="chatbox">
-        {% for message in conversation %}
-            {% if message.role == "user" %}
-                <p class="user-message">{{ message.content }}</p>
-            {% elif message.role  == "assistant" %}
-                <p class="bot-message">{{ message.content }}</p>
-            {% endif %}
-        {% endfor %}
-    </div>
+    <section class="section">
+        <div class="container">
+            <div class="column is-half is-offset-one-quarter is-primary">
+                <div class="notification is-primary">
+                    <h1 class="title"> A.I. Assistant</h1>
+                </div>
+            </div>
 
-    <br/>
-    <form method="POST">
-        <label for="user_input">Type a message:</label>
-        <input type="text" id="user_input" name="user_input">
-        <input type="test" hidden id="input_type" name="input_type" value="text">
-        <input type="submit" value="Submit">
-    </form>
-    <br/>
-    <form method="POST">
-        <label for="user_input">Or use your voice:</label>
-        <input type="test" hidden id="input_type" name="input_type" value="speech">
-        <input type="submit" value="Speak">
-    </form>
+            <h4 class="title is-4">Chat History:</h4>
+            <div id="chatbox">
+                {% for message in conversation %}
+                    {% if message.role == "user" %}
+                        <p class="user-message">{{ message.content }}</p>
+                    {% elif message.role  == "assistant" %}
+                        <p class="bot-message">{{ message.content }}</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <br/>
+            <form method="POST">
+                <div class="columns">
+                    <div class="column is-one-fifth">
+                        <label class="label" for="user_input">Type a message:</label>
+                    </div>
+                    <div class="column">
+                        <input class="input" type="text" id="user_input" name="user_input">
+                        <input type="test" hidden id="input_type" name="input_type" value="text">
+                    </div>
+                    <div class="column">
+                        <input class="button" type="submit" value="Submit">
+                    </div>
+                </div>
+            </form>
+            <br/>
+            <form method="POST">
+                <div class="columns">
+                    <div class="column is-one-fifth">
+                        <label class="label" for="user_input">Or use your voice:</label>
+                        <input type="test" hidden id="input_type" name="input_type" value="speech">
+                    </div>
+                    <div class="column">
+                        <input class="button is-primary" type="submit" value="Speak">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
 </body>
 </html>
