@@ -6,6 +6,7 @@ from flask import Flask, render_template, request
 
 # Create a Flask application
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # openai setup
 openai.api_key = os.getenv("OPENAI_API_KEY")

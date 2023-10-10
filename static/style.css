@@ -7,6 +7,11 @@
     overflow-y: auto;
 }
 
+#status-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
 .user-message {
     text-align: right;
     color: blue;
