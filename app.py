@@ -3,6 +3,7 @@ import openai
 import text_to_speech
 import speech_to_text
 import json
+import threading
 from flask import Flask, render_template, request, jsonify
 
 # Create a Flask application
@@ -44,7 +45,11 @@ def call_chat_gpt():
     )
     result = response.choices[0].message.content
     conversation.append({"role": "assistant", "content": result})
-    #text_to_speech.speak(chat_gpt_response)
+
+    text_to_speech.make_audio(result)
+    # after the audio file is created, play the file on a different thread so we
+    # can return the text to display on the frontend.
+    threading.Thread(target=text_to_speech.play_audio).start()
 
     return jsonify(conversation)
 

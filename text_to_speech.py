@@ -2,14 +2,15 @@ from gtts import gTTS
 import pygame.mixer
 import time
 
-def speak(phrase):
-    tts = gTTS(phrase)
-    tts.save('hello.mp3')
-    play_mp3('hello.mp3')
+AUDIO_FILE_PATH = 'audio_response.mp3'
 
-def play_mp3(file_path):
+def make_audio(phrase):
+    tts = gTTS(phrase)
+    tts.save(AUDIO_FILE_PATH)
+
+def play_audio():
     pygame.mixer.init()
-    pygame.mixer.music.load(file_path)
+    pygame.mixer.music.load(AUDIO_FILE_PATH)
     pygame.mixer.music.play()
     while pygame.mixer.music.get_busy():
         time.sleep(1)
