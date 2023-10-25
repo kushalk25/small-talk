@@ -2,7 +2,8 @@ import os
 import openai
 import text_to_speech
 import speech_to_text
-from flask import Flask, render_template, request
+import json
+from flask import Flask, render_template, request, jsonify
 
 # Create a Flask application
 app = Flask(__name__)
@@ -15,31 +16,37 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 conversation = [{"role": "system", "content": "You are a helpful assistant"}]
 
 # Define a route for the home page
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def home():
-    if request.method == 'POST':
-        input_type = request.form['input_type']
-        user_input = ""
-
-        if input_type == "speech":
-            user_input = speech_to_text.record_audio()
-        elif input_type == "text":
-            user_input = request.form['user_input']
-
-        conversation.append({"role": "user", "content": user_input})
-        # get the chatgpt response and add that too
-        chat_gpt_response = call_chat_gpt(user_input)
-        conversation.append({"role": "assistant", "content": chat_gpt_response})
-        text_to_speech.speak(chat_gpt_response)
-
     return render_template('index.html', conversation=conversation)
 
-def call_chat_gpt(input):
+@app.route('/add_to_chat', methods=['POST'])
+def add_to_chat():
+    data = json.loads(request.data)
+
+    input_type = data['input_type']
+    user_input = ""
+
+    if input_type == "speech":
+        user_input = speech_to_text.record_audio()
+    elif input_type == "text":
+        user_input = data['user_input']
+
+    conversation.append({"role": "user", "content": user_input})
+
+    return jsonify(conversation)
+
+@app.route('/chat', methods=['GET'])
+def call_chat_gpt():
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=conversation
     )
-    return response.choices[0].message.content
+    result = response.choices[0].message.content
+    conversation.append({"role": "assistant", "content": result})
+    #text_to_speech.speak(chat_gpt_response)
+
+    return jsonify(conversation)
 
 
 # Run the application
