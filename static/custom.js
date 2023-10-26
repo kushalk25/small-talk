@@ -1,13 +1,10 @@
-function scrollToBottom() {
-    var chatbox = $("#chatbox");
-    chatbox.scrollTop(chatbox[0].scrollHeight);
-}
-
 function addTextToChat(event){
     var user_input = "";
     const input_type = event.target.elements.input_type.value;
     if (input_type === "text") {
         user_input = event.target.elements.user_input.value
+    } else if (input_type == "speech") {
+        updateStatus("Listening");
     }
 
     let textDecoder = new TextDecoder('utf-8')
@@ -25,6 +22,7 @@ function addTextToChat(event){
     }).then(function(conversation_data) {
         let result = textDecoder.decode(conversation_data.value);
         refreshChatBox(JSON.parse(result));
+        updateStatus("Processing");
         getChatGPTResponse();
     });
 
@@ -42,25 +40,8 @@ function getChatGPTResponse() {
     }).then(function(conversation_data) {
         let result = textDecoder.decode(conversation_data.value);
         refreshChatBox(JSON.parse(result));
+        updateStatus("Ready");
     })
-}
-
-function refreshChatBox(conversation){
-    // Use Jquery to get chatbox and remove the existing content
-    var chatbox = $("#chatbox");
-    chatbox.empty();
-    $("#user_input").val("");
-
-    // for each message in the conversation
-    for (i in conversation) {
-        message = conversation[i]
-
-        if (message.role == "user") {
-            chatbox.append(`<p class="user-message">${message.content}</p>`)
-        } else if (message.role == "assistant") {
-            chatbox.append(`<p class="bot-message">${message.content}</p>`)
-        }
-    }
 }
 
 $(document).ready(function() {

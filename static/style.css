@@ -25,3 +25,11 @@
 h1 {
     text-align: center;
 }
+
+.processing-status {
+    color: red;
+}
+
+.ready-status {
+    color: green;
+}
