@@ -42,7 +42,7 @@
                     </div>
                 </div>
             </div>
-            <div id="chatbox">
+            <div id="chatbox" class="imessage">
                 {% if conversation|length < 2 %}
                     <br/>
                     <br/>
@@ -50,9 +50,9 @@
 
                 {% for message in conversation %}
                     {% if message.role == "user" %}
-                        <p class="user-message">{{ message.content }}</p>
+                        <p class="from-me">{{ message.content }}</p>
                     {% elif message.role  == "assistant" %}
-                        <p class="bot-message">{{ message.content }}</p>
+                        <p class="from-them">{{ message.content }}</p>
                     {% endif %}
                 {% endfor %}
             </div>
